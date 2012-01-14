@@ -1,3 +1,23 @@
-A simple consumer for the 1.USA.gov data feed. Details available at: http://www.usa.gov/About/developer_resources/developers.shtml
+A consumer for a bitly decode stream, and publisher to a Socrata dataset.
 
-Details on the hack day can be found at: http://blog.usa.gov/post/7054661537/1-usa-gov-open-data-and-hack-day
+Additional details available at: http://www.usa.gov/About/developer_resources/developers.shtml
+http://blog.usa.gov/post/7054661537/1-usa-gov-open-data-and-hack-day
+
+
+# KNOWN ISSUES
+- does not support proxy servers
+- does not support fallbacks in connection attempt timing
+- buffered data is discarded under the following conditions (not a big deal for small buffer sizes):
+  - connection failures of the source stream
+  - shutting down the app (CTRL-C) 
+- bitly doesn't send periodic linefeeds when there's no click activity, so the stream can be timed out by any involved agents (proxy servers, etc) along the connection path.
+
+# CHANGELOG:
+
+## 0.2 / 2012-01-14
+
+- Rewrote connection handling to recycle EventMachine, supporting HTTP response codes
+- Added configuration options for connection, session timeouts
+- Added timestamps to all console outputs
+- Added console output for bitly hashes successfully written to socrata
+- Changed "Short URL" output so the URL isn't hardcoded (now uses Short URL CNAME [bitly:hh])
